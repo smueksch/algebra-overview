@@ -1,0 +1,2005 @@
+%\documentclass[8pt]{extarticle} % Use for smaller font size.
+\documentclass[10pt]{article} % 10pt is smallest font size for 'article'.
+\usepackage[utf8]{inputenc}
+\usepackage{multicol}
+\usepackage{calc}
+\usepackage{ifthen}
+\usepackage[portrait]{geometry}
+\usepackage{amsmath,amsthm,amsfonts,amssymb}
+\usepackage{mathtools}
+\usepackage{wasysym}
+\usepackage{tensor}
+\usepackage{color,graphicx,overpic}
+\usepackage{hyperref}
+\usepackage{enumerate}
+\usepackage{etoolbox} % Required for \appto.
+\usepackage{centernot}
+
+\usepackage{xargs}
+
+\usepackage{ifthen}
+
+% Define emphasis to be bold face and italic.
+\DeclareTextFontCommand{\emph}{\bfseries\em}
+
+% Removes most of whitespace above and below equations.
+\newcommand{\zerodisplayskips}{%
+  \setlength{\abovedisplayskip}{-5pt}% Default: 12pt plus 3pt minus 9pt
+  \setlength{\belowdisplayskip}{3pt}% Default: 0pt plus 3pt
+  \setlength{\abovedisplayshortskip}{-5pt}% Default: 12pt plus 3pt minus 9pt
+  \setlength{\belowdisplayshortskip}{3pt}% Default: 7pt plus 3pt minus 4pt
+}
+\appto{\normalsize}{\zerodisplayskips}
+\appto{\small}{\zerodisplayskips}
+\appto{\footnotesize}{\zerodisplayskips}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Theorem Environment Setup %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{amsthm}
+
+% New environments for definitions and theorems. These will let us put in the
+% exact reference to the definition/theorems in the notes, e.g.
+%
+% \begin{definition}{5.1.1}{}
+%     ...
+% \end{definition}
+%
+% to create a definition with title "Definition 5.1.1", referencing the
+% definition with the same number in the notes.
+\newenvironmentx{definition}[2][\empty] {
+
+    \newcommand{\Title}{Definition}
+
+    \ifthenelse{ \equal{#2}{\empty} }{
+        % Only one argument supplied, don't need parantheses.
+        \par\addvspace{\topsep}
+        \noindent\textbf{\Title\  #1}.
+        \ignorespaces
+    }{
+        % Two arguments supplied, show in parantheses.
+        \par\addvspace{\topsep}
+        \noindent\textbf{\Title\  #1} (#2).
+        \ignorespaces
+    }
+}
+
+\newenvironmentx{theorem}[2][\empty] {
+
+    \newcommand{\Title}{Theorem}
+
+    \ifthenelse{ \equal{#2}{\empty} }{
+        % Only one argument supplied, don't need parantheses.
+        \par\addvspace{\topsep}
+        \noindent\textbf{\Title\  #1}.
+        \ignorespaces
+    }{
+        % Two arguments supplied, show in parantheses.
+        \par\addvspace{\topsep}
+        \noindent\textbf{\Title\  #1} (#2).
+        \ignorespaces
+    }
+}
+
+\newenvironmentx{lemma}[2][\empty] {
+
+    \newcommand{\Title}{Lemma}
+
+    \ifthenelse{ \equal{#2}{\empty} }{
+        % Only one argument supplied, don't need parantheses.
+        \par\addvspace{\topsep}
+        \noindent\textbf{\Title\  #1}.
+        \ignorespaces
+    }{
+        % Two arguments supplied, show in parantheses.
+        \par\addvspace{\topsep}
+        \noindent\textbf{\Title\  #1} (#2).
+        \ignorespaces
+    }
+}
+
+
+\newenvironmentx{proposition}[2][\empty] {
+
+    \newcommand{\Title}{Proposition}
+
+    \ifthenelse{ \equal{#2}{\empty} }{
+        % Only one argument supplied, don't need parantheses.
+        \par\addvspace{\topsep}
+        \noindent\textbf{\Title\  #1}.
+        \ignorespaces
+    }{
+        % Two arguments supplied, show in parantheses.
+        \par\addvspace{\topsep}
+        \noindent\textbf{\Title\  #1} (#2).
+        \ignorespaces
+    }
+}
+
+\newenvironmentx{corollary}[2][\empty] {
+
+    \newcommand{\Title}{Corollary}
+
+    \ifthenelse{ \equal{#2}{\empty} }{
+        % Only one argument supplied, don't need parantheses.
+        \par\addvspace{\topsep}
+        \noindent\textbf{\Title\  #1}.
+        \ignorespaces
+    }{
+        % Two arguments supplied, show in parantheses.
+        \par\addvspace{\topsep}
+        \noindent\textbf{\Title\  #1} (#2).
+        \ignorespaces
+    }
+}
+
+\newenvironmentx{remark}[2][\empty] {
+
+    \newcommand{\Title}{Remark}
+
+    \ifthenelse{ \equal{#2}{\empty} }{
+        % Only one argument supplied, don't need parantheses.
+        \par\addvspace{\topsep}
+        \noindent\textbf{\Title\  #1}.
+        \ignorespaces
+    }{
+        % Two arguments supplied, show in parantheses.
+        \par\addvspace{\topsep}
+        \noindent\textbf{\Title\  #1} (#2).
+        \ignorespaces
+    }
+}
+
+\newenvironmentx{example}[2][\empty] {
+
+    \newcommand{\Title}{Example}
+
+    \ifthenelse{ \equal{#2}{\empty} }{
+        % Only one argument supplied, don't need parantheses.
+        \par\addvspace{\topsep}
+        \noindent\textbf{\Title\  #1}.
+        \ignorespaces
+    }{
+        % Two arguments supplied, show in parantheses.
+        \par\addvspace{\topsep}
+        \noindent\textbf{\Title\  #1} (#2).
+        \ignorespaces
+    }
+}
+
+\newenvironmentx{exercise}[2][\empty] {
+
+    \newcommand{\Title}{Exercise}
+
+    \ifthenelse{ \equal{#2}{\empty} }{
+        % Only one argument supplied, don't need parantheses.
+        \par\addvspace{\topsep}
+        \noindent\textbf{\Title\  #1}.
+        \ignorespaces
+    }{
+        % Two arguments supplied, show in parantheses.
+        \par\addvspace{\topsep}
+        \noindent\textbf{\Title\  #1} (#2).
+        \ignorespaces
+    }
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Commands for Mathematical Typesetting %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Redefine \leq and \geq to something nicer looking:
+\renewcommand{\leq}{\leqslant}
+\renewcommand{\geq}{\geqslant}
+
+% Inner Product:
+\DeclareRobustCommand{\InnerProduct}[2]{
+    \ifmmode
+        \left( #1,#2 \right)
+    \else
+        \GenericError{\space\space\space\space}
+        {Attempting to use \InnerProduct outside of math mode}
+    \fi
+}
+
+% Vector Norm: 
+\DeclareRobustCommand{\Norm}[1]{
+    \ifmmode
+        \left\lVert #1 \right\rVert
+    \else
+        \GenericError{\space\space\space\space}
+        {Attempting to use \Norm outside of math mode}
+    \fi
+}
+
+% Image of Function:
+\DeclareMathOperator{\im}{im}
+
+% Sign:
+\DeclareMathOperator{\sgn}{sgn}
+
+% Norm of a Vector:
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+
+% Set of Matrices:
+\DeclareMathOperator{\Mat}{Mat}
+
+% Proof Hint:
+\newcommand{\Hint}{\vspace{0.2em}\textit{Hint: }}
+
+% Identity Mapping:
+\DeclareMathOperator{\id}{id}
+
+% This sets page margins to .5 inch if using letter paper, and to 1cm
+% if using A4 paper. (This probably isn't strictly necessary.)
+% If using another size paper, use default 1cm margins.
+\ifthenelse{\lengthtest { \paperwidth = 11in}}
+    { \geometry{top=.5in,left=.5in,right=.5in,bottom=.5in} }
+    {\ifthenelse{ \lengthtest{ \paperwidth = 297mm}}
+        {\geometdry{top=1cm,left=1cm,right=1cm,bottom=1cm} }
+        {\geometry{top=1cm,left=1cm,right=1cm,bottom=1cm} }
+    }
+
+% Turn off header and footer
+\pagestyle{empty}
+
+% Redefine section commands to use less space
+\makeatletter
+\renewcommand{\section}{\@startsection{section}{1}{0mm}%
+                                {-1ex plus -.5ex minus -.2ex}%
+                                {0.5ex plus .2ex}%x
+                                {\normalfont\large\bfseries}}
+\renewcommand{\subsection}{\@startsection{subsection}{2}{0mm}%
+                                {-1explus -.5ex minus -.2ex}%
+                                {0.5ex plus .2ex}%
+                                {\normalfont\normalsize\bfseries}}
+\renewcommand{\subsubsection}{\@startsection{subsubsection}{3}{0mm}%
+                                {-1ex plus -.5ex minus -.2ex}%
+                                {1ex plus .2ex}%
+                                {\normalfont\small\bfseries}}
+\makeatother
+
+% Define BibTeX command
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+% Don't print section numbers
+\setcounter{secnumdepth}{0}
+
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt plus 0.5ex}
+
+%My Environments
+%\newtheorem{example}[section]{Example}
+% -----------------------------------------------------------------------
+
+\begin{document}
+\raggedright
+\footnotesize
+\begin{multicols}{3}
+
+
+% multicols parameters
+% These lengths are set only within the two main columns
+%\setlength{\columnseprule}{0.25pt}
+\setlength{\premulticols}{1pt}
+\setlength{\postmulticols}{1pt}
+\setlength{\multicolsep}{1pt}
+\setlength{\columnsep}{2pt}
+\setlength{\columnseprule}{0.4pt} % For vertical lines separating columns.
+
+\begin{center}
+     \Large{Algebra} \\
+     \footnotesize{Sebastian Müksch, v2, 2018/19}
+\end{center}
+
+% Cauchy-Schwarz Inequality.
+%\begin{theorem}{5.2.5}{Cauchy-Schwarz}
+%
+%    $\vec{v},\vec{w}$ in inner product space, then
+%
+%        \begin{align*}
+%            \left| \InnerProduct{\vec{v}}{\vec{w}} \right| \leq \Norm{\vec{v}} \Norm{\vec{w}}
+%        \end{align*}
+%
+%    with equality if linearly \emph{dependent}.
+%
+%\end{theorem}
+
+%%%%%%%%%%%%%%%%%
+% Vector Spaces %
+%%%%%%%%%%%%%%%%%
+
+\section{Vector Spaces}
+
+% Zero-Conclusions in Vector Spaces.
+\begin{lemma}{1.2.4}{Product with Zero Vector}
+
+    Let $V$ be an $F$-vector space, then $\forall \lambda \in F: \lambda \vec{0} = \vec{0}$. Furthermore, $\lambda \vec{v} = \vec{0} \Rightarrow \lambda = 0$ or $\vec{v} = 0$.
+
+\end{lemma}
+
+% Generated Subspace Is Minimal Containing Subspace.
+\begin{proposition}{1.4.5}{Generating a Vector Subspace From a Set}
+
+    Let $T \subseteq V$, $V$ begin vector space over $F$. Then $\langle T \rangle$ is the smallest subspace of $V$ containing $T$.
+
+\end{proposition}
+
+% Vectors In Span Do Not Change The Span.
+\begin{example}{1.4.6}{}
+
+    Let $T \subseteq V$, $\vec{v} \in \langle T \rangle$. Then $\langle T \cup \{\vec{v}\} \rangle = \langle T \rangle$.
+
+\end{example}
+
+% Intersection of Subspaces is Subspace.
+\begin{exercise}{4}{}
+
+    Any intersection of vector subspaces is a vector subspace.
+
+\end{exercise}
+
+% Properties of Bases.
+\begin{theorem}{1.5.12}{Characterisation of Bases}
+
+    Let $E \subseteq V$ of vector space $V$. The following are equivalent:
+
+        \begin{enumerate}[(1)]
+            \setlength{\parskip}{0em}
+            \item $E$ is a basis;
+            \item $E$ is a \emph{minimal generating} set, i.e. $\forall \vec{v} \in E: E \setminus \{\vec{v}\}$ is not generating;
+            \item $E$ is \emph{maximal linearly independent} set, $\forall \vec{v} \in V: E \cup \{\vec{v}\}$ is not linearly independent.
+        \end{enumerate}
+
+\end{theorem}
+
+% Every Finite Vector Space Has a Basis.
+\begin{corollary}{1.5.13}{The Existence of a Basis}
+
+    Let $V$ be a finite vector space over field $F$. Then $V$ has a basis.
+
+    \Hint Take finite generating set, reduce until linearly independent.
+
+\end{corollary}
+
+\begin{theorem}{1.5.14}{Useful Variant on Characterisation of Bases}
+
+    Let $V$ be a vector space.
+
+        \begin{enumerate}[(1)]
+            \item If $L \subset V$ is linearly independent and $E$ is minimal generating set s.t. $L \subseteq E$, then $E$ is a basis.
+            \item If $E \subseteq V$ is generating and $L$ is maximal linearly independent set s.t. $L \subseteq E$, then $L$ is a basis.
+        \end{enumerate}
+
+\end{theorem}
+
+% Vectors Have Unique Way of Being Written as Combination of Bases Vectors.
+\begin{theorem}{1.5.16}{A Useful Variant on Linear Combinations of Basis Elements}
+
+    Let $V$ be a $F$-vector space, $F$ being a field and $(\vec{v}_i)_{i \in I}$ a family of vectors in $V$. The following are equivalent:
+
+        \begin{enumerate}[(1)]
+            \setlength{\parskip}{0em}
+            \item Family $(\vec{v}_i)_{i \in I}$ is a basis for $V$;
+            \item $\forall \vec{v} \in V$, there exists \emph{precisely one} family $(a_i)_{i \in I}$ of elements in $F$, almost all zero, s.t. $\vec{v} = \sum_{i \in I}a_i\vec{v}_i$.
+        \end{enumerate}
+
+\end{theorem}
+
+% Linearly Independent Sets Are At Most As Big As Generating Sets.
+\begin{theorem}{1.6.1}{Fundamental Estimate of Linear Algebra}
+
+    Let $V$ be a vector space, $L \subset V$ a linearly independent subset and $E \subseteq V$ a generating set. Then $|L| \leq |E|$.
+
+\end{theorem}
+
+\begin{theorem}{1.6.2}{Steinitz Exchange Theorem}
+
+    Let $V$ be a vector space, $L \subset V$ a \emph{finite} linearly independent subset and $E \subseteq V$ a generating set. Then we can swap elements of $E$ with elements of $L$ and keep it a generating set.
+
+\end{theorem}
+
+\begin{lemma}{1.6.3}{Exchange Lemma}
+
+    Let $V$ be a vector space, $M \subseteq V$ a linearly independent, $E$ a generating set s.t. $M \subseteq E$. If $\vec{w} \in V \setminus M$ s.t. $M \cup \{ \vec{w} \}$ is linearly independent, then $\exists \vec{e} \in E \setminus M$ s.t. $(E \setminus \{\vec{e}\} \cup \{\vec{w}\})$ is generating.
+
+    \Hint $\vec{w} = \sum \alpha_i \vec{e}_i,\ \vec{e}_i \in E$, $M \cup \{ \vec{w} \} \Rightarrow \exists \vec{e}_i \not\in M$, express that $\vec{e}_i$ with $\vec{w}$.
+
+\end{lemma}
+
+% Finite Vector Spaces Have Finite Bases of Equal Size.
+\begin{corollary}{1.6.4}{Cardinality of Bases}
+
+    Let $V$ be a \emph{finitely} generated vector space.
+
+    \begin{enumerate}[(1)]
+        \setlength{\parskip}{0em}
+        \item $V$ has a finite basis;
+        \item $V$ cannot have an infinite basis;
+        \item Any two bases of $V$ have the same number of elements.
+    \end{enumerate}
+
+    \Hint Theorem 1.6.1 \& Contradiction.
+
+\end{corollary}
+
+% Dimension of Zero Vector Space.
+\begin{example}{1.6.7}{}
+
+    Basis of zero vector space is $\emptyset \Rightarrow$ dimension of zero vector space is $0$.
+
+\end{example}
+
+% Bounds on Sizes of Linearly Independent and Generating Sets.
+\begin{corollary}{1.6.8}{Cardinality Criterion for Bases}
+
+    Let $V$ be a finitely generated vector space.
+
+        \begin{enumerate}[(1)]
+            \item $L \subset V$ linearly independent, then $|L| \leq \dim{V}$ and $|L| = \dim{V} \Rightarrow$ $L$ is a basis.
+            \item $E \subseteq V$ generating, then $\dim{V} \leq |E|$ and $|E| = \dim{V} \Rightarrow$ $E$ is a basis.
+        \end{enumerate}
+
+    \Hint Theorem 1.6.1 \& 1.5.12.
+
+\end{corollary}
+
+% Proper Subspaces Have Strictly Lower Dimensions.
+\begin{corollary}{1.6.9}{Dimension Estimate of Vector Subspaces}
+
+    Let $U \subset V$ be a proper subspace of \emph{finite} vector space $V$. Then $\dim{U} < \dim{V}$.
+
+\end{corollary}
+
+% Arbitrary Subspace Conclusions Based on Dimensionality.
+\begin{remark}{1.6.10}{}
+
+    If $U \subseteq V$ subspace of arbitrary vector space, then $\dim{U} \leq \dim{V}$ and $\dim{U} = \dim{V} < \infty \Rightarrow U = V$.
+
+\end{remark}
+
+% Dimensionality of Subspace Spanned by Two Subspaces.
+% N.B.: This looks a lot like Inclusion-Exclusion Principle.
+\begin{theorem}{1.6.11}{The Dimension Theorem}
+
+    Let $U,W \subseteq V$ be subspaces. Then
+
+        \begin{align*}
+            \dim{(U + W)} + \dim{(U \cap W)} = \dim{U} + \dim{W} \\
+            \dim{(U + W)} = \dim{U} + \dim{W} - \dim{(U \cap W)}
+        \end{align*}
+
+    \Hint $f: U \oplus W \to V$; $(\vec{u},\vec{w}) \mapsto \vec{u} + \vec{w}$ $\Rightarrow \im{f} = U + W$, $\ker{f} = U \cap W$. Rank-Nullity.
+
+\end{theorem}
+
+% Dimension of Cartesian Product.
+\begin{exercise}{6}{}
+
+    Let $V_1,\hdots,V_n$ be $F$-vector spaces, then $\dim(V_1 \oplus \hdots \oplus V_n)$ $= \dim(V_1) + \hdots + \dim(V_n)$.
+
+\end{exercise}
+
+% Linear Mappings Map Vector Subspaces to Vector Subspaces.
+\begin{exercise}{10}{}
+
+    The image/preimage of a vector subspace under a linear mapping is a vector subspace.
+
+\end{exercise}
+
+% Combining Linear Mappings.
+\begin{exercise}{12}{}
+
+    Let $V_1,\hdots,V_n,W$ be vector spaces, $f_i:V_i \to W$ linear mappings. Then $f: V_1 \oplus \hdots \oplus V_n \to W$ with $f(\vec{v}_1,\hdots,\vec{v}_n) = f_1(\vec{v}_1) + \hdots + f_i(\vec{v}_n)$ is a new linear mapping. This gives a bijection:
+
+        \begin{align*}
+            \mathrm{Hom}(V_1,W) \times \hdots \times \mathrm{Hom}(V_n,W) \\ \xrightarrow{\sim} \mathrm{Hom}(V_1 \oplus \hdots \oplus V_n,W)
+        \end{align*}
+
+    with inverse $f \mapsto (f \circ \mathrm{in}_i)_i$.
+
+\end{exercise}
+
+% n Dimensional Vector Spaces Are Isomorphic to F^n.
+\begin{theorem}{1.7.7}{Classification of Vector Space by Dimension}
+
+    Let $V$ be vector space over $F$, $n \in \mathbb{N}$. Then $F^n \cong V \Leftrightarrow \dim{V} = n$.
+
+\end{theorem}
+
+% Linear Maps From Subspaces Can Be Extended.
+\begin{exercise}{17}{}
+
+    Let $U \subseteq V$ be subspace of vector space $V$ and $f: U \to W$. Then $f$ can be extended to a \emph{linear} mapping $\tilde{f}: V \to W$.
+
+\end{exercise}
+
+% Rank-Nullity Theorem.
+\begin{theorem}{1.8.4}{Rank-Nullity Theorem}
+
+    Let $f: V \to W$ be a linear mapping. Then
+
+        \begin{align*}
+            \dim{V} = \dim{(\im{f})} + \dim{(\ker{f})}
+        \end{align*}
+
+    \Hint $V$ finite $\Rightarrow \im{f},\ker{f}$ finite, contrapositive shows Theorem holds for $V$ infinite case. Assume $V$ finite, then Cor. 1.5.13 \& Ex. 18.
+
+\end{theorem}
+
+% Linear Map Partitions Basis into Bases for Kernel and Image.
+\begin{exercise}{18}{}
+
+    Let $f: V \to W$ be a linear map. If $\vec{v}_1, \hdots, \vec{v}_s$ is a basis for $\ker{f}$ and extended by $\vec{v}_{s+1}, \hdots, \vec{v}$ it is basis of $V$, then $f(\vec{v}_{s+1}),\hdots,f(\vec{v}_n)$ is basis of $\im{f}$.
+
+\end{exercise}
+
+% Complementary Subspaces Partition The Space.
+\begin{exercise}{19}{}
+
+    Let $U,W \subseteq V$ be subspaces of $V$. $U,W$ are complementary $\Leftrightarrow$ $V = U + W$ and $U \cap W = \{0\}$.
+
+\end{exercise}
+
+% Complementary Subspaces Span The Space and Are Small Enough.
+\begin{exercise}{20}{}
+
+    Let $U,W \subseteq V$ be subspaces of $V$. $U,W$ are complementary $\Leftrightarrow$ $V = U + W$ and $\dim{U} + \dim{W} \leq \dim{V}$.
+
+\end{exercise}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Linear Mappings and Matrices %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Linear Mappings and Matrices}
+
+% Square Matrices Are Products of Elementary Ones.
+\begin{theorem}{2.2.3}{}
+
+    Every square matrix with entries in a field can be written as a product of elementary matrices.
+
+\end{theorem}
+
+% Every Matrix Has a Smith Normal Form.
+\begin{theorem}{2.2.5}{}
+
+    For every $A \in \Mat(n \times m;F)$ there exist \emph{invertible} matrices $P,Q$ s.t. $PAQ$ is in Smith Normal Form.
+
+    \Hint First row operations to echelon form, then column operations.
+
+\end{theorem}
+
+% Column Rank And Row Rank Are Equal.
+\begin{theorem}{2.2.7}{}
+
+    For any matrix, column and row rank are equal.
+
+    \Hint Column \& Row rank of matrix and its Smith Normal Form are equal as $P,Q$ in Theorem 2.2.5 are invertible.
+
+\end{theorem}
+
+% Change From One Basis to Another.
+\begin{theorem}{2.4.3}{Change of Basis}
+
+    Let $f: V \to W$, $\mathcal{A},\mathcal{A}'$ ordered bases of $V$, $\mathcal{B},\mathcal{B}'$ ordered bases of $W$. Then
+
+        \begin{align*}
+            \tensor[_{\mathcal{B}'}]{[f]}{_{\mathcal{A}'}} = \tensor[_{\mathcal{B}'}]{[\mathrm{id}_W]}{_{\mathcal{B}}} \circ \tensor[_{\mathcal{B}}]{[f]}{_{\mathcal{A}}} \circ \tensor[_{\mathcal{A}}]{[\mathrm{id}_V]}{_{\mathcal{A}'}}
+        \end{align*}
+
+\end{theorem}
+
+% Shortcut For Changing Bases.
+\begin{corollary}{(unlisted)}{}
+
+    Let $f: \mathbb{R}^n \to \mathbb{R}^m$, $\mathcal{A} = \{\vec{a}_i\}$ ordered basis of $\mathrm{R}^n$, $\mathcal{B} = \{ \vec{b}_i \}$ ordered basis of $\mathbb{R}^m$. Then
+
+        \begin{align*}
+            \tensor[_{\mathcal{B}}]{[f]}{_{\mathcal{A}}} = (\tensor[_{\mathcal{S}(m)}]{[\mathrm{id}_{\mathbb{R}^m}]}{_{\mathcal{B}}})^{-1} \circ \tensor[_{\mathcal{S}(m)}]{[f]}{_{\mathcal{A}}} = \\
+            (\vec{b}_1|\vec{b}_2|\hdots|\vec{b}_m)^{-1}(f(\vec{a}_1)|f(\vec{a}_2)|\hdots|f(\vec{a}_n))
+        \end{align*}
+
+\end{corollary}
+
+% Faster Change of Basis For Endomorphisms.
+\begin{theorem}{2.4.4}{}
+
+    Let $f: V \to V$, $\mathcal{A},\mathcal{A}'$ ordered bases of $V$. Then
+
+        \begin{align*}
+            \tensor[_{\mathcal{A}'}]{[f]}{_{\mathcal{A}'}} = (\tensor[_{\mathcal{A}}]{[\mathrm{id}_V]}{_{\mathcal{A}'}})^{-1} \circ \tensor[_{\mathcal{A}}]{[f]}{_{\mathcal{A}}} \circ \tensor[_{\mathcal{A}}]{[\mathrm{id}_V]}{_{\mathcal{A}'}}
+        \end{align*}
+
+\end{theorem}
+
+% Shape of Nilpotent Matrices And Nilpotent to Power of Size is Zero.
+\begin{exercise}{32}{}
+
+    Let $f: V \to V$. Then $f$ nilpotent $\Rightarrow$ there exists an order basis of $V$ s.t. representing matrix of $f$ is upper triangular with only $0$'s along diagonal. Additionally, $M \in \Mat(n;F)$ upper triangular with only $0$'s along diagonal $\Rightarrow$ $M^n = 0$.
+
+\end{exercise}
+
+% Trace is Invariant to Commutation in Matrix Product.
+\begin{exercise}{33}{}
+
+    Let $A,B$ be matrices of appropriate sizes, then $\mathrm{tr}(AB) = \mathrm{tr}(BA)$.
+
+\end{exercise}
+
+% Conjugate Matrices Have Equal Trace.
+\begin{corollary}{33}{}
+
+    Conjugate matrices have equal trace.
+
+    \Hint Ex. 33 with $A=T^{-1}M,B=T$.
+
+\end{corollary}
+
+% Calculate Dimension of Image of Idempotent Map Via Trace.
+\begin{exercise}{35}{}
+
+    Let $f: V \to V$ be idempotent, i.e. $f^2 = f$, then $\mathrm{tr}(f) = \dim{(\im{f})}$.
+
+\end{exercise}
+
+%%%%%%%%%%%%%%%%%%%%%
+% Rings and Modules %
+%%%%%%%%%%%%%%%%%%%%%
+
+\section{Rings and Modules}
+
+% Field Integers Modulo m.
+\begin{proposition}{3.1.11}{}
+
+    Let $m \in \mathbb{N}$, then $\mathbb{Z}/m\mathbb{Z}$ is a field if and only if $m$ is prime.
+
+    \Hint $(\!\Rightarrow\!)$ $\overline{a} \in \mathbb{Z}/m\mathbb{Z} \Rightarrow \exists \overline{b} \in \mathbb{Z}/m\mathbb{Z}$ s.t. $\overline{ab} = 1 \Leftrightarrow ab = km + 1$. $a$ does not divide $1$, so cannot divide $m$. $(\Longleftarrow)$ $\overline{a} \in \mathbb{Z}/m\mathbb{Z}$, $\mathrm{hcf}(a,m)=1 \Leftrightarrow ab + mk = 1 \Leftrightarrow \overline{ab} = 1$.
+
+\end{proposition}
+
+% Multiplication group of units in a ring.
+\begin{proposition}{3.2.10}{}
+    The set $R^{\times}$ of units in $R$ forms a \emph{group under multiplication}.
+\end{proposition}
+
+% Zero-related conclusions in integral domain.
+\begin{remark}{(unknown)}{}
+    If $R$ is an integral domain, then for $a,b \in R$:
+
+    \begin{enumerate}[(1)]
+        \setlength{\parskip}{0em}
+        \item $ab = 0 \Rightarrow a = 0$ or $b = 0$, and
+        \item $a \neq 0$ and $b \neq 0 \Rightarrow ab \neq 0$.
+    \end{enumerate}
+\end{remark}
+
+% Cancellation Law of Integral Domains.
+\begin{proposition}{3.2.16}{Cancellation Law of Integral Domains}
+
+    Let $R$ be an integral domain and $a,b,c \in R$. Then $ac = bc$ and $c \neq 0$ implies $a = b$.
+
+    \Hint $ac = bc \Leftrightarrow (a - b)c = 0$.
+
+\end{proposition}
+
+% When integer factor ring is an integral domain.
+\begin{proposition}{3.2.17}{}
+
+    Let $m \in \mathbb{N}$, then $\mathbb{Z}/m\mathbb{Z}$ is an integral domain if and only if $m$ is prime.
+
+    \Hint $(\Leftarrow)$ $\overline{k},\overline{l}$ zero-divisors $\Rightarrow$ $\overline{kl}=\overline{0}$ $\Rightarrow$ $m$ divides $k$ or $l$ as $m$ prime, so $\overline{k} = 0$ or $\overline{l} = 0$, contradiction. $(\Rightarrow)$ $m$ not prime, then $m = kl$, $1 < k,l < m$, then $\overline{k} \neq 0$ or $\overline{l} \neq 0$ but $\overline{kl} = \overline{0}$.
+
+\end{proposition}
+
+% Finite Integral Domains are Fields.
+\begin{theorem}{3.2.18}{}
+
+    Every \emph{finite} integral domain is a field.
+
+    \Hint $\lambda_a: R \to R; b \mapsto ab$, cancellation law gives injectivity, finite gives surjectivity.
+
+\end{theorem}
+
+% Zero-divisor Properties Inherited By Polynomial Rings.
+\begin{lemma}{3.3.3}{}
+
+    \begin{enumerate}[(i)]
+        \item If $R$ has no zero-divisors, then $R[X]$ has no zero-divisors and $\mathrm{deg}(PQ) = \mathrm{deg}(P) + \mathrm{deg}(Q)$.
+        \item If $R$ is an integral domain, so is $R[X]$.
+    \end{enumerate}
+
+\end{lemma}
+
+% Existence and Uniqueness of Dividing Polynomial and Remainder.
+\begin{theorem}{3.3.4}{Division and Remainder}
+
+    Let $R$ be an integral domain and $P,Q \in R[X]$ with $Q$ \emph{monic}. Then there exists \emph{unique} $A,B \in R[X]$ s.t. $P = AQ + B$ and $\deg(B) < \deg(Q)$ or $B = 0$.
+
+    \Hint Choose $A$ s.t. $\deg(P - AQ)$ minimal (possible as degree non-negative. Suppose $\deg(P - AQ) = r \geq \deg(Q) = d$ $\Rightarrow$ $\deg(P - A + a_rX^{r-d}Q) < \deg(P - AQ)$.
+
+\end{theorem}
+
+% Units in Polynomial Ring over Integral Domain.
+\begin{exercise}{42}{}
+
+    If $R$ is an integral domain, then $R[X]^{\times} = R^{\times}$.
+
+\end{exercise}
+
+% Polynomials Are Not Just Special Functions.
+\begin{exercise}{43}{}
+
+    Let $R=\mathbb{F}_p$, where $p$ is prime. Then the mapping $R[X] \to \mathrm{Maps}(R,R)$ is not injective.
+
+    \Hint $X^p - X \in \mathbb{F}_p[X]$ \& Fermat's Little Theorem.
+
+\end{exercise}
+
+% Root-related Factor of a Polynomial.
+\begin{proposition}{3.3.9}{}
+
+    Let $R$ be a commutative ring, $\lambda \in R$ and $P(X) \in R[X]$. Then $\lambda$ is a root of $P(X)$ if and only if $(X - \lambda)$ divides $P(X)$.
+
+\end{proposition}
+
+% Maximum Number of Roots in Polynomial.
+\begin{theorem}{3.3.10}{}
+
+    Let $R$ be an integral domain. Then a non-zero polynomial $P \in R[X]$ has at most $\mathrm{deg}(P)$ roots in $R$.
+
+    \Hint $\lambda_{1,\hdots,m}$ distinct roots of $P$ $\Rightarrow$ $i \geq 2:$ $0 = P(\lambda_i) = A(\lambda_i)(\lambda_i - \lambda_1)$ and $\lambda_i - \lambda_1 \neq 0$, induction.
+
+\end{theorem}
+
+% Fundamental Theorem of Algebra.
+\begin{theorem}{3.3.13}{Fundamental Theorem of Algebra}
+
+    The field $\mathbb{C}$ is algebraically closed.
+
+\end{theorem}
+
+% Linear Factor Decomposition of Polynomials.
+\begin{theorem}{3.3.14}{}
+
+    Let $F$ be an algebraically closed field. Then every non-zero polynomial $P \in F[X]$ \emph{decomposes into linear factors}
+
+        \begin{align*}
+            P = c(X - \lambda_1)\hdots(X - \lambda_n)
+        \end{align*}
+
+    with $n \geq 0$, $c \in F^{\times}$ and $\lambda_i \in F$. This decomposition is \emph{unique}, up to reordering.
+
+\end{theorem}
+
+% Possible Values of Identity under Homomorphism.
+\begin{remark}{3.4.4}{}
+
+    Let $R,S$ be rings and $f: R \to S$ be a homomorphism. Then $f(1_R)$ is \emph{idempotent}, i.e. $f(1_R)^2=f(1_R) \Leftrightarrow f(1_r)[f(1_R) - 1_S]=0_S$. If $S$ has no zero-divisors, then either $f(1_R) = 0_S$ or $f(1_R) = 1_S$.
+
+\end{remark}
+
+% Properties of Homomorphisms.
+\begin{lemma}{3.4.5}{}
+
+    Let $f: R \to S$ be a ring homomorphism. Then for all $x,y \in R$, $m \in \mathbb{Z}$:
+
+        \begin{enumerate}[(1)]
+            \setlength{\parskip}{0em}
+            \item $f(0_R) = 0_S$;
+            \item $f(-x) = -f(x)$;
+            \item $f(x-y) = f(x)-f(y)$;
+            \item $f(mx) = mf(x)$.
+        \end{enumerate}
+
+\end{lemma}
+
+% Homomorphism Not Sending Identity to Identity.
+\begin{remark}{3.4.6}{}
+
+    \begin{enumerate}[(1)]
+        \setlength{\parskip}{0em}
+        \item Let $f$ be a homomorphism. Then $f(x^n)=(f(x))^n$ for all $n \in \mathbb{N}$.
+        \item Let $f: \mathbb{R} \to \textrm{Mat}(2;\mathbb{R}); x \mapsto \bigl( \begin{smallmatrix}x & 0\\ 0 & 0\end{smallmatrix}\bigr)$, then $f$ does not send identity to identity.
+    \end{enumerate}
+
+\end{remark}
+
+% Set Failing Last Axiom of Ideals.
+\begin{example}{3.4.10}{}
+
+    $I = \{ \bigl( \begin{smallmatrix}0 & b\\ 0 & d\end{smallmatrix}\bigr): b,d \in \mathbb{R} \subset \Mat(2;\mathbb{R})$ is not an ideal, it fails to satisfy $ir \in I$.
+
+\end{example}
+
+\begin{proposition}{3.4.14}{}
+
+    Let $R$ be a commutative ring, $T \subseteq R$. Then $\tensor[_R]{\langle T \rangle}{}$ is the smallest ideal of $R$ containing $T$.
+
+    \Hint Minimality: $I \unlhd R, t_1, \hdots, t_m \in I \Rightarrow \sum_{i=1}^m r_it_i \in I$.
+
+\end{proposition}
+
+% Kernel of a Homomorphism is an Ideal.
+\begin{proposition}{3.4.18}{}
+
+    Let $f: R \to S$ be a ring homomorphism. Then $\ker{f} \unlhd R$.
+
+\end{proposition}
+
+% Injectivity if and only if Trivial Kernel.
+\begin{lemma}{3.4.20}{}
+
+    $f$ injective $\Leftrightarrow \ker{f} = \{0\}$.
+
+\end{lemma}
+
+% Intersection of Ideals is an Ideal.
+\begin{lemma}{3.4.21}{}
+
+    $I, J \unlhd R \Rightarrow I \cap J \unlhd R$.
+
+\end{lemma}
+
+% The Sum of Ideals is an Ideal.
+\begin{lemma}{3.4.21}{}
+
+    $I, J \unlhd R \Rightarrow I + J = \{a + b: a \in I, b \in J\} \unlhd R$.
+
+\end{lemma}
+
+% Subring with Different Identity.
+\begin{example}{3.4.25}{}
+
+    If $F$ is a field, then for any $m,n \in \mathbb{N}$, with $m \leq n$, $\Mat(m;F)$ is a subring of $\Mat(n,F)$. \emph{But}, identities are \emph{not} equal, i.e. $\mathbb{I}_m \neq \mathbb{I}_n$.
+
+\end{example}
+
+% Test for a Subring.
+\begin{proposition}{3.4.26}{Test for a Subring}
+
+    Let $R'$ be a subset of ring $R$. Then $R'$ is a subring of $R$ if and only if:
+
+        \begin{enumerate}[(1)]
+            \setlength{\parskip}{0em}
+            \item $R'$ has a multiplicative identity;
+            \item $a,b \in R' \Rightarrow a - b \in R'$; and
+            \item $R'$ is closed under multiplication.
+        \end{enumerate}
+
+\end{proposition}
+
+% Sending Units to Units.
+\begin{proposition}{3.4.29}{}
+
+    Let $f: R \to S$ be a ring homomorphism and assume $f(1_R)=1_S$. Then $x \in R^{\times} \Rightarrow f(x) \in S^{\times}$ and $(f(x))^{-1} = f(x^{-1})$.
+
+    \Hint $f(x)f(x^{-1}) = f(xx^{-1}) = f(1_R)$.
+
+\end{proposition}
+
+% Factor Rings inherit Commutativity.
+\begin{exercise}{52}{}
+
+    Let $R$ be a ring and $I \unlhd R$. If $R$ is commutative, so is $R/I$.
+
+\end{exercise}
+
+% Requirement for Non-Trivial Factor Ring.
+\begin{exercise}{53}{}
+
+    Let $R$ be a ring and $I \unlhd R$. $R/I$ is a non-zero ring if and only if $I \neq R$.
+
+\end{exercise}
+
+% Factor Rings inherit Units.
+\begin{exercise}{54}{}
+
+    Let $R$ be a ring and $I$ be a \emph{proper} ideal of $R$. If $r \in R^{\times}$, then $r + I \in (R/I)^{\times}$ with $(r + I)^{-1} = r^{-1} + I$.
+
+\end{exercise}
+
+\begin{theorem}{3.6.7}{The Universal Property of Factor Rings}
+
+    Let $R$ be a ring and $I \unlhd R$.
+
+        \begin{enumerate}[(1)]
+            \setlength{\parskip}{0em}
+            \item $\mathrm{can}: R \to R/I; r \mapsto r + I$ is a surjective ring homomorphism with kernel $I$.%, i.e. $\mathrm{can}^{-1}(0) = I$.
+            \item If $f: R \to S$ is a ring homomorphism with $f(I) = \{0_S\}$, so that $I \subseteq \ker{f}$, then there exists a unique ring homomorphism $\overline{f}: R/I \to S$ such that $f = \overline{f} \circ \mathrm{can}$.
+        \end{enumerate}
+
+    \Hint $f(x + I) = f(x) + f(I) = \{f(x)\}$, so $\overline{f}(x + I) = f(x)$ only possible map.% s.t. $f = \overline{f} \circ \mathrm{can}$.
+
+\end{theorem}
+
+% First Isomorphism Theorem for Rings.
+\begin{theorem}{3.6.9}{First Isomorphism Theorem for Rings}
+
+    Let $R,S$ be rings, then every homomorphism $f: R \to S$ induces an isomorphism:
+
+        \begin{align*}
+            \overline{f}: R/\ker{f} \xrightarrow{\sim} \im{f}.
+        \end{align*}
+
+    \Hint $\overline{f}$ from Universal Property, $\ker{\overline{f}} = \{0 + \ker{f}\}$ and Lemma 3.4.20.
+
+\end{theorem}
+
+% Z-Modules are Exactly Abelian Groups.
+\begin{example}{3.7.4}{}
+
+    A $\mathbb{Z}$-module is exactly the same as abelian group.
+
+\end{example}
+
+% Ideals are Modules.
+\begin{example}{3.7.6}{}
+
+    Let $I \unlhd R$, then $I$ is an $R$-module.
+
+\end{example}
+
+% Construction of Modules.
+\begin{example}{3.7.7}{}
+
+    Let $R$ be a ring, $M_1,\hdots,M_n$ be $R$-modules, then $M_1 \times M_2 \times \hdots \times M_n$ is an $R$-module with addition and scalar multiplication defined componentwise.
+
+\end{example}
+
+% No Zero-Conclusion in Modules.
+\begin{example}{3.7.9}{}
+
+    Let $R = \Mat(2;\mathbb{C})$ and $M = \mathbb{C}^2$. Then $\bigl( \begin{smallmatrix}0 & 1\\ 0 & 0\end{smallmatrix}\bigr) \bigl( \begin{smallmatrix}1 \\ 0\end{smallmatrix}\bigr) = \bigl( \begin{smallmatrix}0 \\ 0\end{smallmatrix}\bigr)$, so $\lambda \vec{v} = 0 \centernot\Rightarrow \lambda = 0$ or $\vec{v} = \vec{0}$.
+
+\end{example}
+
+% Test for a Submodule.
+\begin{proposition}{3.7.20}{Test for a Submodule}
+
+    Let $R$ be a ring and let $M$ be an $R$-module. Let $M'$ be a subset of $M$, then $M'$ is a submodule if and only if:
+
+        \begin{enumerate}[(1)]
+            \setlength{\parskip}{0em}
+            \item $0_M \in M'$;
+            \item $a,b \in M' \Rightarrow a-b \in M'$;
+            \item $r \in R, a \in M' \Rightarrow ra \in M'$.
+        \end{enumerate}
+
+\end{proposition}
+
+% Kernel and Images are Submodules.
+\begin{lemma}{3.7.21}{}
+
+    Let $f: M \to N$ be an $R$-homomorphism. Then $\ker{f}$ is a submodule of $M$ and $\im{f}$ is a submodule of $N$.
+
+\end{lemma}
+
+% Generated Submodule is Smallest Module Containing the Set.
+\begin{lemma}{3.7.28}{}
+
+    Let $T \subseteq M$. Then $\tensor[_R]{\langle T \rangle}{}$ is the smalles submodule of $M$ containing $T$.
+
+\end{lemma}
+
+% Arbitrary Submodule Intersections are Submodules
+\begin{lemma}{3.7.29}{}
+
+    The intersection of \emph{any} collection of submodules of $M$ is a submodule of $M$.
+
+\end{lemma}
+
+% Adding Submodules Gives a Submodule.
+\begin{lemma}{3.7.30}{}
+
+    Let $M_1,M_2$ be a submodule of $M$. Then $M_1 + M_2$ is a submodule of $M$.
+
+\end{lemma}
+
+% Universal Property of Factor Modules.
+\begin{theorem}{3.7.32}{The Universal Property of Factor Modules}
+
+    Let $R$ be a ring, $L,M$ $R$-modules and $N$ a submodule of $M$.
+
+        \begin{enumerate}[(1)]
+            \setlength{\parskip}{0em}
+            \item $\mathrm{can}: M \to M/N; a \mapsto a + N$ is a surjective $R$-homomorphism with kernel $N$.%, i.e. $\mathrm{can}^{-1}(0) = I$.
+            \item If $f: M \to L$ is an $R$-homomorphism with $f(N) = \{0_L\}$, so that $N \subseteq \ker{f}$, then there exists a unique homomorphism $\overline{f}: M/N \to L$ such that $f = \overline{f} \circ \mathrm{can}$.
+        \end{enumerate}
+
+\end{theorem}
+
+% First Isomorphism Theorem for Modules.
+\begin{theorem}{3.6.9}{First Isomorphism Theorem for Modules}
+
+    Let $R$ be a ring, $M,N$ be $R$-modules, then every $R$-homomorphism $f: M \to N$ induces an $R$-isomorphism:
+
+        \begin{align*}
+            \overline{f}: M/\ker{f} \xrightarrow{\sim} \im{f}.
+        \end{align*}
+
+    \Hint $\overline{f}$ from Universal Property, $\ker{\overline{f}} = \{0 + \ker{f}\}$ for injectivity.
+
+\end{theorem}
+
+% Second Isomorphism Theorem for Modules.
+\begin{exercise}{59}{Second Isomorphism Theorem for Modules}
+
+    Let $N,K$ be submodules of $R$-module $M$. Then $K$ is submodule of $N + K$, $N \cap K$ is a submodule of $N$ and
+
+        \begin{align*}
+            \frac{N+K}{K} \cong \frac{N}{N \cap K}.
+        \end{align*}
+
+\end{exercise}
+
+% Third Isomorphism Theorem for Modules.
+\begin{exercise}{60}{Third Isomorphism Theorem for Modules}
+
+    Let $N,K$ be submodules of $R$-module $M$, s.t. $K \subseteq N$. Then $N/K$ is a submodule of $M/K$ and
+
+        \begin{align*}
+            \frac{M/K}{N/K} \cong M/N.
+        \end{align*}
+
+\end{exercise}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Determinants and Eigenvalues Redux %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Determinants and Eigenvalues Redux}
+
+% Length of Identity and Transpositions.
+\begin{example}{4.1.4}{}
+
+    The identity of $\mathfrak{S}_n$ has length $0$. A transposition swapping $i$ and $j$ has length $2|i - j| - 1$.
+
+\end{example}
+
+% Sign of Product is Product of Sign.
+\begin{lemma}{4.1.5}{Multiplicativity of Sign}
+
+    For each $n \in \mathbb{N}$, sign of permutation $\sgn: \mathfrak{S}_n \to \{\pm 1\}$ produces group homomorphism, i.e. $\forall \sigma, \tau \in \mathfrak{S}_n: \sgn(\sigma \tau) = \sgn(\sigma)\sgn(\tau)$.
+
+\end{lemma}
+
+% Cost of Moving Element to Front.
+\begin{exercise}{61}{}
+
+    Let $\sigma \in \mathfrak{S}_n$ be permutation s.t. it moves $i$ to the first place and leaves rest unchanged. Then $\sigma$ has $i-1$ inversions and $\sgn(\sigma) = (-1)^{i-1}$.
+
+\end{exercise}
+
+% Decomposing Permutations into Transpositions.
+\begin{exercise}{62}{}
+
+    Every permutation in $\mathfrak{S}_n$ can be written as product of transpositions of neighbouring numbers, i.e. permutations of form $(i\ i+1)$.
+
+\end{exercise}
+
+% Leibniz Formula.
+\begin{definition}{4.2.1}{}
+
+    Let $A \in \Mat(n;R)$, where $R$ is a ring. Then
+
+        \begin{align*}
+            \det{A} = \sum_{\sigma \in \mathfrak{S}_n} \sgn\!{(\sigma)}a_{1\sigma(a)}\hdots a_{n\sigma{n}}
+        \end{align*}
+
+    In degenerate case $n=0$, ``empty matrix" is assigned determinant of $1$.
+
+\end{definition}
+
+% Determinant of Upper Triangular Matrix.
+\begin{example}{4.2.4}{}
+
+    The determinant of an upper triangular matrix is the product of the entries along the main diagonal.
+
+\end{example}
+
+%% Determinant of Block-Upper Triangular Matrix.
+%\begin{exercise}{63}{}
+%
+%    Let $A$ be block-upper triangular matrix s.t. $A_1,\hdots,A_t$ are the matrices along the diagonal. Then $\det{A} = \det(A_1)\hdots\det(A_t)$.
+%
+%\end{exercise}
+
+% Determinant of Block-Upper Triangular Matrix.
+\begin{exercise}{63}{}
+
+    Let $\mathbb{A}$ be a block-upper triangular matrix with diagonal entries $\mathbb{A}_{ii} = A_i$, for $A_i \in \Mat(n;R)$. Then $\det{\mathbb{A}} = \det{(A_1)}\det{(A_2)}\hdots\det{(A_n)}$.
+
+\end{exercise}
+
+\begin{remark}{(unknown)}{}
+
+    $|\det(L)|$ describes how much linear mapping $L$ changes areas. If sign of $\det(L)$ is positive, then $L$ preserves orientation, if negative, then $L$ reverses orientation.
+
+\end{remark}
+
+% Alternative Form of Alternating Bilinear Form Axiom.
+\begin{remark}{4.3.2}{}
+
+    If $H: U \times U \to W$, $U,W$ being $F$-vector spaces, is an \emph{alternating} bilinear form, then $\forall a,b \in U: H(a,b) = -H(b,a)$. If $1_F + 1_F \neq 0_F$, then $\forall a,b \in U: H(a,b) = -H(b,a)$ implies $H$ is alternating. N.B.: this does \emph{not} hold in $F=\mathbb{F}_2$!
+
+\end{remark}
+
+% Alternative Form of Alternating Multilinear Form Axiom.
+\begin{remark}{4.3.5}{}
+
+    If $H: V \times V \times \hdots \times V \to W$, $V,W$ being $F$-vector spaces, is an \emph{alternating} bilinear form, then
+
+        \begin{align*}
+            H(\vec{v}_1,\hdots,\vec{v}_i,\hdots,\vec{v}_j,\hdots,\vec{v}_n) = \\
+            -H(\vec{v}_1,\hdots,\vec{v}_j,\hdots,\vec{v}_i,\hdots,\vec{v}_n)
+        \end{align*}
+
+    More generally, for $\sigma \in \mathfrak{S}_n$:
+
+        \begin{align*}
+            H(\vec{v}_{\sigma(1)},\hdots,\vec{v}_{\sigma(n)}) = \sgn(\sigma)H(\vec{v}_1,\hdots,\vec{v}_n)
+        \end{align*}
+
+    Converse is true provided $1_F + 1_F \neq 0_F$.
+
+\end{remark}
+
+% Characterisation of the Determinant
+\begin{theorem}{4.3.6}{Characterisation of the Determinant}
+
+    Let $F$ be a \emph{field}. The mapping $\det: \Mat(n;F) \to F$ is the unique alternating multilinear form on $n$-tuples of column vectors with values in $F$ s.t. $\det{\mathbb{I}_n} = 1_F$.
+
+\end{theorem}
+
+% Multilinear Forms Reduce to Identity and Determinant.
+\begin{exercise}{64}{}
+
+    Let $d: \Mat(n;F) \to F$ be an \emph{alternating} multilinear form on $n$-tuples of column vectors in $F^n$, then $\forall A \in \Mat(n;F): d(A) = d(e_1|\hdots|e_n)\det{(A)}$.
+
+\end{exercise}
+
+% Determinant of Product is Product of Determinant
+\begin{theorem}{4.4.1}{Multiplicativity of the Determinant}
+
+    Let $R$ be a commutative ring, $A,B \in \Mat(n;R)$. Then $\det\!{(AB)} = (\det{A})(\det{B})$.
+
+    %\Hint TODO
+
+\end{theorem}
+
+% Matrix Invertible If and Only If Determinant Non-Zero.
+\begin{theorem}{4.4.2}{Determinantal Criterion for Invertibility}
+
+    Let $F$ be a field, $A \in \Mat(n;F)$. Then $\det{A} \neq 0 \Leftrightarrow A$ invertible.
+
+    \Hint $(\Leftarrow)\ B = A^{-1},\ \det{(AB)} = 1$ by multiplicativity, $(\Rightarrow)$ A not invertible, then dependent column(s), then alternating form $0$.
+
+\end{theorem}
+
+% Consequences of Intertibility Criterion.
+\begin{remark}{4.4.3}{}
+
+    From Theorem 4.4.2 follows that $\det{A^{-1}} = (\det{A})^{-1}$ and $\det{(A^{-1}BA)} = \det{B}$. Latter asserts that there exists unique determinant for an endomorphism.
+
+\end{remark}
+
+\begin{theorem}{4.4.7}{Laplace's Expansion of the Determinant}
+
+    Let $A = (a_{ij})$ with entries in commutative ring $R$. For fixed $i$, $i$-th row expansion is
+
+        \begin{align*}
+            \det{A} = \sum_{j=0}^n a_{ij} C_{ij}
+        \end{align*}
+
+    and for fixed $j$, $j$-th column expansion is
+
+        \begin{align*}
+            \det{A} = \sum_{i=0}^n a_{ij} C_{ij}
+        \end{align*}
+
+\end{theorem}
+
+% Using the Adjoint to Compute the Determinant.
+\begin{theorem}{4.4.9}{Cramer's Rule}
+
+    Let $A \in \Mat(n;R)$, $R$ being a commutative ring. Then $A \cdot \mathrm{adj}(A) = (\det{A}) \mathbb{I}_n$.
+
+\end{theorem}
+
+% Invertibility Equivalent to Determinant Being a Unit.
+\begin{corollary}{4.4.11}{Invertibility of Matrices}
+
+    Let $A \in \Mat(n;R)$, $R$ being a commutative ring. Then $A$ invertible $\Leftrightarrow \det{A} \in R^{\times}$.
+
+\end{corollary}
+
+% Existence of Eigenvalues for Endomorphisms.
+\begin{theorem}{4.5.4}{Existence of Eigenvalues}
+
+    Let $f: V \to V$ be an endomorphism, $V$ a non-zero, finite dimensional vector space over $F$, where $F$ is algebraically closed. Then $f$ has an eigenvalue.
+
+\end{theorem}
+
+% Cannot Make Existence of Eigenvalues Any More General.
+\begin{remark}{4.5.5}{}
+
+    Requirements in Theorem 4.5.4 are as tight as possible: consider infinite dimensional vector space $\mathbb{C}[X]$ with $f: P \mapsto X \cdot P$ and non-algebraically closed $\mathbb{R}^2$ with rotation by $90$ degrees.
+
+\end{remark}
+
+% Roots of Characteristic Polynomial are Eigenvalues.
+\begin{theorem}{4.5.8}{Eigenvalues and Characteristic Polynomials}
+
+    Let $A \in \Mat(n;F)$, $F$ being a field. The eigenvalues of $A: F^n \to F^n$ are the roots of $\chi_A$.
+
+    \Hint $\lambda$ eigenvalue of $A$ $\Leftrightarrow$ $\exists \vec{v} \neq 0$ s.t. $A\vec{v} = \lambda \vec{v}$ $\Leftrightarrow$ $\ker(A - \lambda \mathbb{I}_n) \neq \{\vec{0}\}$ $\Leftrightarrow$ $\det(A - \lambda \mathbb{I}_n)$.
+
+\end{theorem}
+
+% Coefficients in Characteristic Polynomial.
+\begin{exercise}{67}{}
+
+    Let $A \in \Mat(n;F)$, $F$ being a field. Then $\chi_A(x) = (-x)^n + \mathrm{tr}(A)(-x)^{n-1} + \hdots + \det{(A)}$.
+
+\end{exercise}
+
+% Conjugate Matrices Have Equal Characteristic Polynomial.
+\begin{remark}{4.5.9}{}
+
+    \begin{enumerate}
+        \setlength{\parskip}{0em}
+        \item [(2)] Let $A,B \in \Mat(n;R)$ be representing matrices of $f: V \to V$ with respect to different bases. Then $A$ and $B$ are conjugate.
+        \item [(3)] Let $A,B \in \Mat(n;R)$, $R$ being a commutative ring, be \emph{conjugate}. Then $\chi_A = \chi_B$.
+        \item [(4)] Let $f: V \to V$, $V$ being an $n$-dimensional vector space over field $F$ and let $A$ be the representing matrix for $f$ with respect to \emph{any} basis. Then $\chi_f = \chi_A$.
+    \end{enumerate}
+
+\end{remark}
+
+% Conjugacy is Equivalent to Existing Endomorphism.
+\begin{exercise}{68}{}
+
+    Let $A,B \in \Mat(n;F)$, $F$ begin a field. Then $A$ and $B$ are conjugate $\Leftrightarrow \exists f: V \to V$ s.t. $A$ and $B$ are representing matrices of $f$.
+
+\end{exercise}
+
+% Triangularisability Equivalent To Linear Factor Decomposition of Characteristic Polynomial
+\begin{proposition}{4.6.1}{Triangularisability}
+
+    Let $f: V \to V$, $V$ being a finite dimensional $F$-vector space. Then the following is equivalent:
+
+        \begin{enumerate}[(1)]
+            \setlength{\parskip}{0em}
+            \item $f$ is \emph{triangularisable}.
+            \item $\chi_f$ decomposes into linear factors in $F[X]$.
+        \end{enumerate}
+
+\end{proposition}
+
+% Equivalent Statements to Triangularisability.
+\begin{remark}{4.6.2}{}
+
+    \begin{enumerate}
+        \setlength{\parskip}{0em}
+        \item [(1)] Endomorphism $A: F^n \to F^n$ is triangularisable $\Leftrightarrow$ $A$ is conjugate to an upper triangular matrix.
+        \item [(3)] Endomorphism $f: F^n \to F^n$ is triangularisable $\Leftrightarrow$ there exists sequence of subspaces $\{ 0 \} = V_0 \subset V_1 \subset V_2 \subset \hdots \subset V_n = V$ s.t. $V_i$ is $i$-dimensional and $f(V_i) \subseteq V_i$.
+    \end{enumerate}
+
+\end{remark}
+
+% Characteristic Polynomial of Nilpotent Matrices.
+\begin{remark}{4.6.4}{}
+
+    Let $A \in \Mat(n;F)$, then $A$ \emph{nilpotent} $\Leftrightarrow$ $\chi_A(x) = (-x)^n$.
+
+\end{remark}
+
+% Eigenvectors for Different Eigenvalues are Linearly Independent.
+\begin{lemma}{4.6.8}{Linear Independence of Eigenvectors}
+
+    Let $f: V \to V$ with eigenvectors $\vec{v}_1,\hdots,\vec{v}_n$ with pairwise different eigenvalues $\lambda_1,\hdots,\lambda_n$. Then $\vec{v}_1,\hdots,\vec{v}_n$ are linearly independent.
+
+    \Hint Consider $(f-\lambda_2 \id_V) \circ \hdots \circ (f - \lambda_n \id_V)(\vec{v}_j) = $ $\prod_{i=2}^n (\lambda_i - \lambda_j)\vec{v}_i$, $0$ if $i \neq 1$ and $\prod_{i=2}^n (\lambda_1 - \lambda_j)\vec{v}_1$ if $i = 1$. Apply to $\sum_{i=1}^n \alpha_i \vec{v}_i = \vec{0}$ $\Rightarrow$ $\alpha_1 \prod_{i=2}^n (\lambda_1 - \lambda_j)\vec{v}_1 = \vec{0}$ $\Rightarrow$ $\alpha_1 = 0$. Repeat for rest.
+
+\end{lemma}
+
+% Characteristic Polynomial of Nilpotent Matrices.
+\begin{remark}{4.6.3}{}
+
+    Let $A \in \Mat(n;F)$, then $A$ nilpotent $\Leftrightarrow \chi_A(x) = (-x)^n$.
+
+\end{remark}
+
+% Matrix is Root of Its Characteristic Polynomial.
+\begin{theorem}{4.6.9}{The Cayley-Hamilton Theorem}
+
+    Let $A \in \Mat(n;R)$, with \emph{commutative ring} R. Then $\chi_A(A) = 0$, the zero matrix.
+
+    \Hint $B = A - x\mathbb{I} \in \Mat(n,R[x])$, Cramer's Rule $\Rightarrow$ $B \cdot \mathrm{adj}(B) =$ $\det(B)\mathbb{I} =$ $\chi_A(x) \mathbb{I}$, $\mathrm{adj}(B) \in \Mat(n,R[x])$. Equally $\mathrm{adj}(B) \in \Mat(n,R)[x]$ $\Rightarrow$ $\mathrm{adj}(B) = \sum_{i \geq 0} x^i K_i$. Substitute s.t. $\chi_A(x) \mathbb{I} = AK_0 + \sum_{i \geq 1} x^i (AK_i - K_{i-1})$. Evaluate at $A$ and cancel s.t. $\chi_A(x) \mathbb{I} = A^{n+1}C_n$. Degree of cofactors of $\mathrm{adj}(B)$ at most $n-1$, so $C_n = 0$.
+
+\end{theorem}
+
+% Stochastic Matrices Have Eigenvalue 1.
+\begin{lemma}{4.7.6}{}
+
+    Let $M \in \Mat(n;\mathbb{R})$ be a Markov matrix. Then $\lambda = 1$ is an eigenvalue of $M$.
+
+    \Hint Columns of $M - \mathbb{I}_n$ sum to $0 \Rightarrow$ sum of row vectors is $\vec{0} \Rightarrow$ linear dependence $\Rightarrow \det{(M - \mathbb{I}_n)} = 0 \Rightarrow \chi_M(1) = 0$.
+
+\end{lemma}
+
+% Stochastic Matrices with Positive Entries Have Special Eigenspace for 1.
+\begin{theorem}{4.7.10}{Perron, 1907}
+
+    Let $M \in \Mat(n;\mathbb{R})$ be a Markov matrix with \emph{positive} entries, then eigenspace $\mathrm{E}(1,M)$ is one dimensional. There exists a unique basis vector $\vec{v} \in \mathrm{E}(1,M)$ whose entries are positive and sum to 1.
+
+\end{theorem}
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+% Inner Product Spaces %
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Inner Product Spaces}
+
+% Standard Inner Product for C^n.
+\begin{example}{5.1.4}{}
+
+    Let $\vec{v},\vec{w} \mathbb{C}^n$, then \emph{standard inner product} is $\InnerProduct{\vec{v}}{\vec{w}} = \vec{v}^T \circ \overline{\vec{w}}$. N.B.: Conjugate on second.
+
+\end{example}
+
+\begin{example}{5.1.6}{}
+
+    Let $\vec{v}, \vec{w}$ be orthogonal. Then Pythagoras' Theorem holds: $\norm{\vec{v} + \vec{w}}^2 = \norm{\vec{v}}^2 + \norm{\vec{w}}^2$.
+
+\end{example}
+
+% Finite Inner Product Spaces Have Orthonormal Bases.
+\begin{theorem}{5.1.10}{}
+
+    Every \emph{finite} dimensional inner product space $V$ has an \emph{orthonormal} basis.
+
+    \Hint Induction on $\dim{V}$. Base Case $\dim{V} = 0$ trivial. $\dim{V} = n > 0 \Rightarrow \exists \vec{v} \in V$, normalize to $\vec{v}_1$ and consider $\InnerProduct{-}{\vec{v}_1}: V \to \mathbb{R}; \vec{w} \to \InnerProduct{\vec{w}}{\vec{v}_1}$. Kernel of that has dim. $n-1$ by Rank-Nullity.
+
+\end{theorem}
+
+% Orthogonal Sets are Subspace and Equal to Orthogonal Complement of Generated Subspace.
+\begin{exercise}{73}{}
+
+    Let $V$ be an inner product space, then $\forall T \subseteq V$ $T^{\perp}$ is a subspace and $T^{\perp} = \langle T \rangle^{\perp}$.
+
+\end{exercise}
+
+% Subspace and Orthogonal Complement Partition The Space.
+\begin{proposition}{5.2.2}{}
+
+    Let $U \subseteq V$ be finite dimensional subspace of inner product space $V$. Then $U,U^{\perp}$ are complementary, i.e. $V = U \oplus U^{\perp}$.
+
+    \Hint Exercise 19. $\vec{v} \in U \cap U^T$ $\Rightarrow$ $\InnerProduct{\vec{v}}{\vec{v}} = 0$ $\Rightarrow$ $\vec{v} = \vec{0}$. Want $\vec{v} = \vec{p} + \vec{r}$ s.t. $\vec{p} \in U$, $\vec{r} \in U^{\perp}$. Thrm 5.1.10 $\Rightarrow$ $U$ has orthonormal basis $\{\vec{v}_i$ s.t. $\vec{p} = \sum_{i=1}^n \InnerProduct{\vec{v}}{\vec{v}_i} \vec{v}_i$. Take $\vec{r} = \vec{v} - \vec{p}$ s.t. $\InnerProduct{\vec{r}}{\vec{v}_j} = 0$ $\Rightarrow$ $\vec{r} \in U^{\perp}$.
+
+\end{proposition}
+
+% Properties of Orthogonal Projection.
+\begin{proposition}{5.2.4}{}
+
+    Let $U \subseteq V$ be finite dimensional subspace of inner product space $V$.
+
+        \begin{enumerate}[(1)]
+            \item $\pi_U$ is a linear mapping with $\im{(\pi_u)} = U$, $\ker{(\pi_U)} = U^{\perp}$;
+            \item if $\{ \vec{v}_1, \hdots, \vec{v}_n \}$ \emph{orthonormal} basis of $U$, then for $\vec{v} \in V$: $\pi_U(\vec{v}) = \sum_{i=1}^n \InnerProduct{\vec{v}}{\vec{v}_i} \vec{v}_i$;
+%            \item if $\{ \vec{v}_1, \hdots, \vec{v}_n \}$ \emph{orthonormal} basis of $U$, then for $\vec{v} \in V$:
+%
+%                \begin{align*}
+%                    \pi_U(\vec{v}) = \sum_{i=1}^n \InnerProduct{\vec{v}}{\vec{v}_i} \vec{v}_i
+%                \end{align*}
+            \item $\pi_U^2 = \pi_U$, i.e. $\pi_U$ idempotent.
+        \end{enumerate}
+
+\end{proposition}
+
+% Cauchy-Schwarz Inequality.
+\begin{theorem}{5.2.5}{Cauchy-Schwarz Inequality}
+
+    Let $\vec{v},\vec{w} \in V$, inner product space. Then
+
+        \begin{align*}
+            |\InnerProduct{\vec{v}}{\vec{w}} \leq \norm{\vec{v}} \norm{\vec{w}}
+        \end{align*}
+
+    with \emph{equality} $\Leftrightarrow \vec{v},\vec{w}$ \emph{linearly dependent}.
+
+    \Hint $\vec{w} = \vec{0}$ trivially true; $\vec{w} \neq 0$, $W = \langle \vec{w} \rangle$, $\vec{x} = \vec{v} - \pi_{W}(\vec{v})$ $\Rightarrow$ $\vec{x} \perp \pi_{W}(\vec{v})$ so Pythagoras holds: $\norm{\vec{v}}^2 = \norm{\vec{x} + \pi_{W}(\vec{v})}^2 =$ $\norm{\vec{x}}^2 + \norm{\pi_{W}(\vec{v})}^2$, $\pi_{W}(\vec{v})$ from Prop. 5.2.4.
+
+\end{theorem}
+
+% Properties of Norm of Inner Product Spaces.
+\begin{corollary}{5.2.6}{}
+
+    Let $\norm{\cdot}$ be the norm on inner product space $V$, then $\forall \vec{v},\vec{w} \in V$:
+
+        \begin{enumerate}[(1)]
+            \setlength{\parskip}{0em}
+            \item $\norm{\vec{v}} \geq 0$, equality $\Leftrightarrow$ $\vec{v} = 0$;
+            \item $\norm{\lambda \vec{v}} = |\lambda|\norm{\vec{v}}$;
+            \item \emph{Triangle Inequality:} $\norm{\vec{v} + \vec{w}} = \norm{\vec{v}} + \norm{\vec{w}}$
+        \end{enumerate}
+
+\end{corollary}
+
+% Adjoint of Adjoint is Original.
+\begin{exercise}{75}{}
+
+    Let $T^*$ be adjoint of $T$. Then $(T^*)^*=T$.
+
+\end{exercise}
+
+% Every Endomorphism Has Unique Adjoint.
+\begin{theorem}{5.3.4}{}
+
+    Let $T: V \to V$, $V$ begin a finite dimensional inner product space. Then $T^*$ exists and is \emph{unique}.
+
+    \Hint $\phi \coloneqq \InnerProduct{T(-)}{\vec{w}}: V \to F$, linear as $\InnerProduct{-}{\vec{w}}$, $T$ are. Thrm 5.1.10 $\Rightarrow$ $\exists \{\vec{e}_i\}_{1 \leq i \leq n}$ orthonormal basis of $V$ $\Rightarrow$ for $\vec{v} = \sum_{i=1}^n \InnerProduct{\vec{v}}{\vec{e}_i}\vec{e}_i$ $\Rightarrow$ $\phi(\vec{v}) =$ $\sum_{i=1}^n \InnerProduct{\vec{v}}{\vec{e}_i}\phi(\vec{e}_i) =$ $\InnerProduct{\vec{v}}{\sum_{i=1}^n \overline{\phi(\vec{e}_i)} \vec{e}_i}$ $\Rightarrow$ $\exists$ $\vec{u}$ s.t. $\phi(\vec{v}) = \InnerProduct{\vec{v}}{\vec{u}} = \InnerProduct{\vec{v}}{T^*(\vec{w})}$ $\Rightarrow$ $T^*$ exists. $\InnerProduct{\vec{v}}{\vec{u} - \vec{u}'} =$ $\phi(\vec{v}) - \phi{\vec{v}}$ for uniqueness \& show linearity with uniqueness.
+
+\end{theorem}
+
+% Self-Adjoint Linear Maps Have Nice Eigenvalues and Eigenvectors.
+\begin{theorem}{5.3.7}{}
+
+    Let $T: V \to V$ be a \emph{self-adjoint} linear mapping on inner product space $V$. Then
+
+        \begin{enumerate}[(1)]
+            \setlength{\parskip}{0em}
+            \item every eigenvalue of $T$ is real;
+            \item if $\lambda,\mu$ are distinct eigenvalues of $T$, then the corresponding eigenvectors are orthogonal;
+            \item $T$ has an eigenvalue.
+        \end{enumerate}
+
+    \Hint (1) $\lambda \InnerProduct{\vec{v}}{\vec{v}} =$ $\InnerProduct{T\vec{v}}{\vec{v}} = $ $\InnerProduct{\vec{v}}{T\vec{v}} = $ $\overline{\lambda}\InnerProduct{\vec{v}}{\vec{v}}$. (2) $\lambda \InnerProduct{\vec{v}}{\vec{w}} =$ $\InnerProduct{T\vec{v}}{\vec{w}} = $ $\InnerProduct{\vec{v}}{T\vec{w}} = $ $\mu\InnerProduct{\vec{v}}{\vec{w}}$. (3) Over $\mathbb{R}$. $R(\vec{v}) = \frac{\InnerProduct{T\vec{v}}{\vec{v}}}{\InnerProduct{\vec{v}}{\vec{v}}}$ restricted to unit sphere, Heine-Borel Thrm $\Rightarrow$ maximum at $\vec{v}_+$ in unit sphere \& $R(\lambda \vec{v}) = R(\vec{v})$ $\Rightarrow$ $\vec{v}_+$ is max. overall. $R_{\vec{w}}(t) = R(\vec{v}_+ + t\vec{w})$ is well-defined and
+
+        \begin{align*}
+            R_{\vec{w}}'(0) = \frac{\InnerProduct{T\vec{w}}{\vec{v}_+} + \InnerProduct{T\vec{v}_+}{\vec{w}}}{\InnerProduct{\vec{v}_+}{\vec{v}_+}} - \\ \frac{2 \InnerProduct{T\vec{v}_+}{\vec{v}_+} \InnerProduct{\vec{v}_+}{\vec{w}}}{\InnerProduct{\vec{v}_+}{\vec{v}_+}^2}.
+        \end{align*}
+
+    Use $\vec{w}^{\perp} \in V$ s.t. $\vec{v}_+ \perp \vec{w}^{\perp}$ $\Rightarrow$ $R_{\vec{w}^{\perp}}'(0) = \frac{\InnerProduct{T\vec{w}^{\perp}}{\vec{v}_+} + \InnerProduct{T\vec{v}_+}{\vec{w}^{\perp}}}{\InnerProduct{\vec{v}_+}{\vec{v}_+}} = 0$ $\Rightarrow$ $\InnerProduct{T\vec{w}^{\perp}}{\vec{v}_+} = - \InnerProduct{T\vec{v}_+}{\vec{w}^{\perp}}$ $\Rightarrow$ $\vec{w}^{\perp} \perp T\vec{v}_+$ $\Rightarrow$ $T\vec{v}_+ \in ( \langle \vec{v}_+ \rangle^{\perp} )^{\perp} = \langle \vec{v}_+ \rangle$ $\Rightarrow$ $\exists \lambda \in \mathbb{R}: T\vec{v}_+ = \lambda \vec{v}_+$.
+
+\end{theorem}
+
+% Self-Adjoint Mappings Produce Orthonormal Bases.
+\begin{theorem}{5.3.9}{The Spectral Theorem for Self-Adjoint Endomorphisms}
+
+    Let $T: V \to V$ be a \emph{self-adjoint} linear map, $V$ being a finite dimensional inner product space. Then $V$ has an orthonormal basis consisting of eigenvectors of $T$.
+
+    \Hint Induction on $\dim{V}$. $\dim{V} = 1$ holds by Thrm 5.3.7. For $\dim{V} = n > 1$ take any eigenvalue $\lambda$ of $T$, exists by Thrm 5.3.7, and \emph{normalized} eigenvector $\vec{u}$. $U = \langle \vec{u} \rangle$, $\vec{v} \in U^{\perp}$. $\InnerProduct{\vec{u}}{T\vec{v}} =$ $\lambda \InnerProduct{\vec{u}}{\vec{v}} = 0$ $\Rightarrow$ $T(U^{\perp}) \subseteq U^{\perp}$, so $\left.T\right|_{U^{\perp}}: U^{\perp} \to U^{\perp}$ self-adjoint, induction hypothesis $\Rightarrow$ $\exists$ orthonormal basis $B$ $\Rightarrow$ $B \cup \{\vec{u}\}$ orthonormal basis $V$.
+
+\end{theorem}
+
+% Orthonormal Matrices Form Orthonormal Bases.
+\begin{exercise}{76}{}
+
+    Let $P \in \Mat(n;\mathbb{R})$, then $P^T P = \mathbb{I}_n$ $\Leftrightarrow$ columns of $P$ form orthonormal basis for $\mathbb{R}^n$.
+
+\end{exercise}
+
+% Real Symmetric Matrices Are Diagonalisable.
+\begin{corollary}{5.3.12}{The Spectral Theorem for Real Symmetric Matrices}
+
+    Let $A \in \Mat(n,\mathbb{R})$ be \emph{symmetric}. Then there exists $P \in \Mat(n,\mathbb{R})$ \emph{orthogonal} s.t.
+
+        \begin{align*}
+            P^TAP = P^{-1}AP = \mathrm{diag}(\lambda_1,\hdots,\lambda_n)
+        \end{align*}
+
+    where $\lambda_1,\hdots,\lambda_n \in \mathrm{R}$ are eigenvalues of $A$, repeated accordingly.
+
+    \Hint Spectral Theorem \& Exercise 76.
+
+\end{corollary}
+
+% Unitary Matrices Form Orthonormal Bases.
+\begin{exercise}{78}{}
+
+    Let $P \in \Mat(n;\mathbb{C})$, then $\overline{P}^T P = \mathbb{I}_n$ $\Leftrightarrow$ columns of $P$ form orthonormal basis for $\mathbb{C}^n$.
+
+\end{exercise}
+
+% Real Symmetric Matrices Are Diagonalisable.
+\begin{corollary}{5.3.15}{The Spectral Theorem for Hermitian Matrices}
+
+    Let $A \in \Mat(n,\mathbb{C})$ be \emph{hermitian}. Then there exists $P \in \Mat(n,\mathbb{C})$ \emph{unitary} s.t.
+
+        \begin{align*}
+            P^TAP = P^{-1}AP = \mathrm{diag}(\lambda_1,\hdots,\lambda_n)
+        \end{align*}
+
+    where $\lambda_1,\hdots,\lambda_n \in \mathrm{R}$ are eigenvalues of $A$, repeated accordingly.
+
+\end{corollary}
+
+% Automatic Self-Adjoint Endomorphism.
+\begin{exercise}{Hw.6, Ex.3}{}
+
+    Let $T: V \to V$ be an endomorphism of a finite-dimensional inner product space. Let $T^*$ be the adjoint of $T$. Then
+
+        \begin{enumerate}[(1)]
+            \setlength{\parskip}{0em}
+            \item $T^*T$ is self-adjoint; and
+            \item if $T^*T=0$, then $T=0$.
+        \end{enumerate}
+
+\end{exercise}
+
+% Determinants of Special Matrices.
+\begin{exercise}{Hw.6, Ex.4}{}
+
+    \begin{enumerate}[(1)]
+        \item Let $A \in \Mat(n;\mathbb{R})$ be an orthogonal matrix. Then $\det{A} \in \{\pm 1\}$.
+        \item Let $A \in \Mat(n;\mathbb{C})$ be a unitary matrix. Then $\det{A}$ lies on the unit circle in $\mathbb{C}$.
+    \end{enumerate}
+
+    \Hint Spectral Theorem \& Exercise 78.
+
+\end{exercise}
+
+%%%%%%%%%%%%%%%%%
+% Miscellaneous %
+%%%%%%%%%%%%%%%%%
+
+\section{Miscellaneous}
+
+% Result about Equivalence Classes.
+\begin{remark}{(unknown)}{}
+    Let $\sim$ be an equivalence relation on $X$, $x,y \in X$ and $E(x), E(y)$ equivalence classes for $x,y$ respectively. The following are equivalent:
+
+    \begin{enumerate}[(1)]
+        \setlength{\parskip}{0em}
+        \item $x \sim y$;
+        \item $E(x) = E(y)$;
+        \item $E(x) \cap E(y) \neq \emptyset$.
+    \end{enumerate}
+\end{remark}
+
+% Transpose of the Sum is the Sum of the Transposes:
+\begin{proposition}{(unknown)}{}
+
+    $A,B$ matrices, then $(A + B)^T = A^T + B^T$.
+
+\end{proposition}
+
+% Determinant of Conjugate Transpose is Conjugate Transpose of Determinant.
+\begin{proposition}{(unknown)}{}
+
+    $A \in \Mat(n;\mathbb{C})$, then $\det(\overline{A}^T) = \overline{\det(A)}$.
+
+\end{proposition}
+
+% Lagrange's Theorem.
+\begin{theorem}{(Lagrange's Theorem)}{}
+
+    Let $G$ be a finite group and $H$ a subgroup, then $|H|$ divides $|G|$.
+
+\end{theorem}
+
+%%%%%%%%%%%%%%%
+% Definitions %
+%%%%%%%%%%%%%%%
+
+% N.B.: Definitions are at the very and as they will likely be the thing
+% accessed the least.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Vector Spaces Definitions %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Definitions}
+
+% Vector Subspace Addition.
+\begin{definition}{(unknown)}{}
+
+    Let $U,W$ be subspace of $V$, then $U + W \coloneqq \langle U \cup W \rangle$, i.e. subspace generated by $U$ and $W$ together.
+
+\end{definition}
+
+% Direct Sum of Vector Spaces.
+\begin{definition}{1.7.6}{}
+
+    Two vector spaces $V_1$ and $V_2$ are \emph{complementary} if addition defines a bijection $V_1 \times V_2 \xrightarrow{\sim} V$. This produces a bijection $V_1 \oplus V_2 \xrightarrow{\sim} V$, we say $V = V_1 \oplus V_2$ is the \emph{(internal) direct sum} of $V_1, V_2$.
+
+\end{definition}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Linear Mappings and Matrices Definitions %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Elementary Matrices.
+\begin{definition}{2.2.2}{}
+
+    An \emph{elementary matrix} is a matrix which differs from the identity in at most one entry.
+
+\end{definition}
+
+% Smith Normal Form.
+\begin{definition}{2.2.4}{}
+
+    A matrix with only $0$'s except possibly along the diagonal, where first only $1$'s then $0$'s, is in \emph{Smith Normal Form}.
+
+\end{definition}
+
+% Column And Row Rank.
+\begin{definition}{2.2.6}{}
+
+    \emph{Column/Row} rank of a matrix is dimension of subspace spanned by columns/rows of said matrix.
+
+\end{definition}
+
+% Rank of a Matrix.
+\begin{definition}{2.2.8}{}
+
+    \emph{Rank of a matrix} $A$, $\mathrm{rk}A$, is column/row rank. If rank of a matrix is equal to number of rows/columns, then matrix has \emph{full rank}.
+
+\end{definition}
+
+% Nilpotent
+\begin{definition}{32}{}
+
+    Endomorphism $f: V \to V$ is \emph{nilpotent} if there exists $d \in \mathbb{N}$ s.t. $f^d = 0$.
+
+\end{definition}
+
+% Trace of a Matrix.
+\begin{definition}{2.4.6}{}
+
+    The \emph{trace} of a matrix $A$, $\mathrm{tr}(A)$, is the \emph{sum} of the diagonal entries.
+
+\end{definition}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Rings and Modules Definitions %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Field.
+\begin{definition}{3.1.8}{}
+
+    A \emph{field} is a non-zero, commutative ring $F$ in which every non-zero element $a \in F$ has an inverse $a^{-1} \in F$.
+
+\end{definition}
+
+% Division Ring.
+\begin{definition}{3.1.9}{}
+
+    A \emph{skewfield} or \emph{division ring} is a non-zero ring $F$ in which every non-zero element $a \in F$ has an inverse $a^{-1} \in F$. N.B.: does \emph{not} have to be commutative.
+
+\end{definition}
+
+% Unit.
+\begin{definition}{3.2.6}{}
+    Let $R$ be a ring. Element $a \in R$ is a \emph{unit} if $a^{-1} \in R$, i.e. $a$ is \emph{invertible}.
+\end{definition}
+
+% Zero-Divisor.
+\begin{definition}{3.2.12}{}
+    Let $R$ be a ring. Element $a \in R$ is a \emph{zero-divisor} if $a \neq 0$ and $\exists \, b \in R$ s.t. $b \neq 0$ and either $ab = 0$ or $ba = 0$.
+\end{definition}
+
+% Integral Domain.
+\begin{definition}{3.2.13}{}
+    An \emph{integral domain} is a \emph{non-zero, commutative} ring with \emph{no zero-divisors}.
+\end{definition}
+
+% Algebraically Closed.
+\begin{definition}{3.3.11}{}
+
+    A field $F$ is algebraically closed if each non-constant polynomial with coefficients in $F$ has a root in $F$.
+
+\end{definition}
+
+% Ideal of a Ring.
+\begin{definition}{3.4.7}{}
+
+    Let $R$ be a ring and $I \subseteq R$. Then $I$ is an \emph{ideal} of $R$, $I \unlhd R$, if:
+
+        \begin{enumerate}[(1)]
+            \setlength{\parskip}{0em}
+            \item $I \neq \emptyset$;
+            \item $a,b \in I \Rightarrow a - b \in I$;
+            \item $\forall i \in I, r \in R: ri, ir \in I$.
+        \end{enumerate}
+
+    E.g. $m\mathbb{Z} \unlhd \mathbb{Z}$, $R \unlhd R$, $\{0\} \unlhd R$.
+
+\end{definition}
+
+% Generated Ideal.
+\begin{definition}{3.4.11}{}
+
+    Let $R$ be a commutative ring, $T \subset R$. Then the \emph{ideal of $R$ generated by $T$} is the set:
+
+        \begin{align*}
+            \tensor[_R]{\langle T \rangle}{} = \{r_1t_1 + \hdots + r_mt_m : t_i \in T, r_i \in R\}
+        \end{align*}
+
+    including $0_R$ in case $T = \emptyset$.
+
+\end{definition}
+
+% Principal Ideal.
+\begin{definition}{3.4.15}{}
+
+    Let $R$ be a commutative ring. Then $I \unlhd R$ is a \emph{principal ideal} if $\exists t \in R: I = \langle t \rangle$.
+
+\end{definition}
+
+% Well-Definedness.
+\begin{definition}{3.5.7}{}
+
+    A map $g: (X/\sim) \to Z$ is \emph{well-defined} if there exists a map $f: X \to Z$ with property $x \sim y \Rightarrow f(x) = f(y)$ and $g = \overline{f}$, where $\overline{f}(E(x)) = f(x)$.
+
+\end{definition}
+
+% Cosets of Ideals.
+\begin{definition}{3.6.1}{}
+
+    Let $I \unlhd R$, $x \in R$ then the set
+
+        \begin{align*}
+            x + I = \{x + i: i \in I \} \subseteq R
+        \end{align*}
+
+    is the \emph{coset of $x$ with respect to $I$ in $R$}.
+
+\end{definition}
+
+% Factor Ring.
+\begin{definition}{3.6.3}{}
+
+    Let $R$ be a ring, $I \unlhd R$ and $\sim$ an equivalence relation defined by $x \sim y \Leftrightarrow x - y \in I$. Then $R/I$, \emph{the factor ring of $R$ by $I$} or \emph{the quotient of $R$ by $I$} is the set $(R/I)$ of cosets of $I$ in $R$.
+
+\end{definition}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Determinants and Eigenvalues Redux Definitions %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Tansposition.
+\begin{definition}{4.1.1}{}
+
+    A \emph{transposition} is a permutation swapping exactly two elements.
+
+\end{definition}
+
+% Inversion.
+\begin{definition}{4.1.2}{}
+
+    An \emph{inversion} of a permutation $\sigma \in \mathfrak{S}_n$ is a pair $(i,j)$ s.t. $1 \leq i < j \leq n$ and $\sigma(i) > \sigma(j)$.
+
+    The number of inversions of the permutation $\sigma$ is \emph{length of $\sigma$}, $\ell(\sigma)$:
+
+        \begin{align*}
+            \ell(\sigma) = |\{(i,j) : 1 \leq i < j \leq n \,\mathrm{but}\, \sigma(i) > \sigma(j)\}|
+        \end{align*}
+
+    The \emph{sign of $\sigma$} is $\sgn\!{(\sigma)} = (-1)^{\ell(\sigma)}$.
+
+\end{definition}
+
+% Bilinear Form.
+\begin{definition}{4.3.1}{}
+
+    Let $U,V,W$ be $F$-vector spaces. A \emph{bilinear form} $H: U \times V \to W$ is a mapping s.t. for all $a,b \in U$ and $c,d \in V$ and all $\lambda \in F$:
+
+        \begin{align*}
+            H(a + b,c) &= H(a,c) + H(b,c) \\
+            H(\lambda a,c) &= \lambda H(a,c) \\
+            H(a,c + d) &= H(a,c) + H(a,d) \\
+            H(a,\lambda c) &= \lambda H(a,c)
+        \end{align*}
+
+    A bilinear form is \emph{symmetric} if $U = V$ and
+
+        \begin{align*}
+            \forall a,b \in U: H(a,b) = H(b,a)
+        \end{align*}
+
+    and \emph{alternating} or \emph{antisymmetric} if $U = V$ and
+
+        \begin{align*}
+            \forall a \in U: H(a,a) = 0.
+        \end{align*}
+    
+\end{definition}
+
+% Alternating Multilinear Form.
+\begin{definition}{4.3.4}{}
+
+    Let $V, W$ be $F$-vector spaces, $H: V \times \hdots \times V$ multilinear form. Then $H$ is \emph{alternating} if it vanishes on any $n$-tuple of elements of $V$ where at least two entries are equal:
+
+        \begin{align*}
+            (\exists i \neq j: v_i = v_j) \Rightarrow H(v_1, \hdots, v_n) = 0.
+        \end{align*}
+
+\end{definition}
+
+% Cofactor of a Matrix.
+\begin{definition}{4.4.6}{}
+
+    Let $A \in \Mat(n;R)$, $R$ commutative ring. Let $1 \leq i,j \leq n$. The \emph{$(i,j)$ cofactor of $A$} is $C_{ij} = (-1)^{i+j}\det{(A\langle i,j \rangle)}$ where $A\langle i,j \rangle$ is $A$ with row $i$ and column $j$ removed.
+
+\end{definition}
+
+% Adjoint of a Matrix.
+\begin{definition}{4.4.8}{}
+
+    Let $A \in \Mat(n;R)$, $R$ being a commutative ring. Let $C_{ji}$ be the $(j,i)$-cofactor of $A$, then the \emph{adjugate matrix} $\mathrm{adj}(A)$ is the matrix with entries $\mathrm{adj}(A)_{ij} = C_{ji}$.
+
+\end{definition}
+
+% Characteristic Polynomial.
+\begin{definition}{4.5.6}{}
+
+    Let $A \in \Mat(n;R)$, $R$ being a commutative ring. Then the \emph{characteristic polynomial of $A$} is $\chi_A(x) \coloneqq \det{(A - x\mathbb{I}_n)} $.
+
+\end{definition}
+
+% Conjugate Matrices.
+\begin{definition}{4.5.9}{}
+
+    Let $A,B \in \Mat(n;R)$, $R$ being a commutative ring. Then $A,B$ are \emph{conjugate} if there exists invertible $P \in \mathrm{GL}(n;R)$ s.t. $B = P^{-1}AP$.
+
+\end{definition}
+
+% Triangularisability.
+\begin{definition}{4.6.1}{}
+
+    Let $f: V \to V$, $V$ being a finite dimensional $F$-vector space. Then $f$ is \emph{triangularisable} if there exists an ordered basis for $V$ s.t. the representing matrix of $f$ with respect to the basis is triangular.
+
+\end{definition}
+
+% Diagonalisability.
+\begin{definition}{4.6.5}{}
+
+    An endomorphism $f: V \to V$ of $F$-vector space $V$ is \emph{diagonalisable} if and only if there exists a basis of $V$ consisting of eigenvectors of $f$. For finite dimensional $V$ this is equivalent to representing matrix being diagonal with eigenvalues of $f$ as entries.
+
+\end{definition}
+
+% Stochastic Matrix.
+\begin{definition}{4.7.5}{}
+
+    A \emph{Markov matrix} or \emph{stochastic matrix}, is a matrix $M$ s.t. each entry is non-negative and the columns sum to $1$.
+
+\end{definition}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Inner Product Spaces Definitions %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Inner Product for R-vector space.
+\begin{definition}{5.1.1}{}
+    $V$ vector space over $\mathbb{R}$, \emph{inner product} is mapping $\InnerProduct{-}{-}: V \times V \to \mathbb{R}$ such that for $\vec{x},\vec{y},\vec{z} \in V$, $\lambda, \mu \in \mathbb{R}$:
+
+        \begin{enumerate}[(1)]
+            \setlength{\parskip}{0em}
+
+            \item $\InnerProduct{\lambda \vec{x} + \mu \vec{y}}{\vec{z}} = \lambda\InnerProduct{\vec{x}}{\vec{z}} + \mu\InnerProduct{\vec{y}}{\vec{z}}$;
+
+            \item $\InnerProduct{\vec{x}}{\vec{y}} = \InnerProduct{\vec{y}}{\vec{z}}$;
+
+            \item $\InnerProduct{\vec{x}}{\vec{x}} \geq 0$ and $0 \Leftrightarrow \vec{x} = \vec{0}$.
+        \end{enumerate}
+
+\end{definition}
+
+% Inner Product for C-vector space.
+\begin{definition}{5.1.1}{}
+    $V$ vector space over $\mathbb{C}$, \emph{inner product} is mapping $\InnerProduct{-}{-}: V \times V \to \mathbb{C}$ such that for $\vec{x},\vec{y},\vec{z} \in V$, $\lambda, \mu \in \mathbb{C}$:
+
+        \begin{enumerate}[(1)]
+            \setlength{\parskip}{0em}
+
+            \item $\InnerProduct{\lambda \vec{x} + \mu \vec{y}}{\vec{z}} = \lambda\InnerProduct{\vec{x}}{\vec{z}} + \mu\InnerProduct{\vec{y}}{\vec{z}}$;
+
+            \item $\InnerProduct{\vec{x}}{\vec{y}} = \overline{\InnerProduct{\vec{y}}{\vec{z}}}$;
+
+            \item $\InnerProduct{\vec{x}}{\vec{x}} \geq 0$ and $0 \Leftrightarrow \vec{x} = \vec{0}$.
+        \end{enumerate}
+
+    N.B.: Complex inner product is hermitian, and so sesquilinear.
+
+\end{definition}
+
+% Skew-Linearity.
+\begin{definition}{5.1.4}{}
+
+    A map $f: V \to W$, $V,W$ complex vector spaces, is \emph{skew-linear} if for $\vec{v},\vec{u} \in V$, $\lambda \in \mathbb{C}$:
+
+        \begin{enumerate}[(i)]
+            \setlength{\parskip}{0em}
+            \item $f(\vec{v} + \vec{u}) = f(\vec{v}) + f(\vec{u})$;
+            \item $f(\lambda\vec{v}) = \overline{\lambda} f(\vec{v})$.
+        \end{enumerate}
+
+\end{definition}
+
+% Sesquilinearity.
+\begin{definition}{5.1.4}{}
+
+    A map $f: V_1 \times V_2 \to W$, complex vector spaces, that is linear in its first and skew-linear in its second variable is a \emph{sesquilinear form}, i.e.:
+
+        \begin{enumerate}[(i)]
+            \setlength{\parskip}{0em}
+            \item $f(\lambda \vec{v},\vec{u}) = \lambda f(\vec{v},\vec{u})$
+            \item $f(\vec{v},\lambda \vec{u}) = \overline{\lambda} f(\vec{v},\vec{u})$
+        \end{enumerate}
+
+\end{definition}
+
+% Hermitian.
+\begin{definition}{5.1.4}{}
+
+    Let $f$ be a sesquilinear form and let $f(\vec{v},\vec{u}) = \overline{f(\vec{u},\vec{v})}$, then $f$ is \emph{hermitian}.
+
+\end{definition}
+
+% Inner Product Norm.
+\begin{definition}{5.1.5}{}
+
+    In complex or real inner product space, the \emph{length} or \emph{inner product norm} $\norm{\vec{v}} \in \mathbb{R}$ is defined $\norm{\vec{v}} = \sqrt{\InnerProduct{\vec{v}}{\vec{v}}}$.
+
+\end{definition}
+
+% Orthonormal Family.
+\begin{definition}{5.1.7}{}
+
+    A family $(\vec{v}_i)_{i \in I}$ of vectors in an inner product space is an \emph{orthonormal family} if all $\vec{v}_i$ have length $1$ and are pairwise orthogonal, i.e. $\InnerProduct{\vec{v}_i}{\vec{v}_j} = \delta_{ij}$.
+
+    If an orthonormal family is a basis, it is an \emph{orthonormal basis}.
+
+\end{definition}
+
+% Orthogonal Set.
+\begin{definition}{5.2.1}{}
+
+    Let $V$ inner product space, $T \subseteq V$. Then
+
+        \begin{align*}
+            T^{\perp} = \{ \vec{v} \in V: \vec{v} \perp \vec{t}, \forall \vec{t} \in T \}
+        \end{align*}
+
+    is the \emph{orthogonal} to $T$.
+
+\end{definition}
+
+% Orthogonal Complement and Projection.
+\begin{definition}{5.2.3}{}
+
+    Let $U \subseteq V$ be finite dimensional subspace of inner product space $V$. $U^{\perp}$ is \emph{orthogonal complement to $U$}.
+
+    The map $\pi_U: V \to V; \vec{v} = \vec{p} + \vec{r} \mapsto \vec{p}$, $\vec{p} \in U$, $\vec{r} \in U^{\perp}$ is the \emph{orthogonal projection from V onto U}.
+
+\end{definition}
+
+% Hermitian Matrices.
+\begin{definition}{5.3.6}{}
+
+    Let $A \in \Mat(n,\mathbb{C})$ s.t. $A = \overline{A}^T$, then $A$ is \emph{hermitian}.
+
+\end{definition}
+
+% Orthogonal Matrix.
+\begin{definition}{5.3.11}{}
+
+    Let $P \in \Mat(m,\mathbb{R})$. $P$ is \emph{orthogonal} if $P^TP = \mathbb{I}_n$, i.e. $P^{-1} = P^T$.
+
+\end{definition}
+
+% Unitary Matrix.
+\begin{definition}{5.3.14}{}
+
+    Let $P \in \Mat(m,\mathbb{C})$. $P$ is \emph{unitary} if $\overline{P}^TP = \mathbb{I}_n$, i.e. $P^{-1} = \overline{P}^T$.
+
+\end{definition}
+
+\end{multicols}
+
+\end{document}
